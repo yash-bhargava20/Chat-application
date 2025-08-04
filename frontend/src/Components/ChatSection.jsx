@@ -1,0 +1,144 @@
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchMessages, sendMessage } from "../store/Slice/chatSlice";
+
+const ChatSection = () => {
+  const dispatch = useDispatch();
+  const { selectedUser, messages, isMessagesLoading } = useSelector(
+    (state) => state.chat
+  );
+  const { authUser } = useSelector((state) => state.auth);
+  const [newMessage, setNewMessage] = useState("");
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (selectedUser?._id) {
+      dispatch(fetchMessages(selectedUser._id));
+    }
+  }, [selectedUser, dispatch]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleSend = (e) => {
+    e.preventDefault();
+    if (newMessage.trim() && selectedUser?._id) {
+      dispatch(
+        sendMessage({
+          receiver: selectedUser._id,
+          message: newMessage,
+          Image: null,
+        })
+      );
+      setNewMessage("");
+    }
+  };
+
+  if (!selectedUser) {
+    return (
+      <div className="flex-1 flex items-center justify-center text-gray-400">
+        Select a user or group to start chatting
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex-1 flex flex-col h-full bg-white rounded-xl shadow-sm">
+      {/* Header */}
+      <div className="border-b border-gray-200 px-4 py-2 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <img
+            src={selectedUser?.avatar?.url || "/avatar-holder.avif"}
+            alt="Avatar"
+            className="w-12 h-12 rounded-full object-cover"
+          />
+          <div>
+            <div className="font-semibold text-gray-900 text-lg">
+              {selectedUser.username || "Group Name"}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto px-8 py-6 space-y-4 bg-[#f7f8fa]">
+        {isMessagesLoading ? (
+          <div className="text-center text-gray-400">Loading messages...</div>
+        ) : (
+          messages?.map((msg) => {
+            const isMe = msg.sender === authUser._id;
+            return (
+              <div
+                key={msg._id}
+                className={`flex ${isMe ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`flex items-end gap-2 max-w-[70%] ${
+                    isMe ? "flex-row-reverse" : ""
+                  }`}
+                >
+                  <img
+                    src={
+                      isMe
+                        ? authUser?.avatar?.url || "/avatar-holder.avif"
+                        : selectedUser?.avatar?.url || "/avatar-holder.avif"
+                    }
+                    alt="Avatar"
+                    className="w-8 h-8 rounded-full object-cover"
+                  />
+                  <div
+                    className={` px-4 py-2 text-sm shadow ${
+                      isMe
+                        ? "bg-[#6c47ff] text-white rounded-b-lg rounded-l-lg"
+                        : "bg-white text-gray-900 rounded-b-lg rounded--lg"
+                    }`}
+                  >
+                    {msg.message}
+                  </div>
+                  <span className="text-xs text-gray-400 pb-1 min-w-fit">
+                    {msg.timestamp
+                      ? new Date(msg.timestamp).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      : ""}
+                  </span>
+                </div>
+              </div>
+            );
+          })
+        )}
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Input */}
+      <form
+        onSubmit={handleSend}
+        className="px-6 py-4 border-t border-gray-200 flex items-center gap-3 bg-white"
+      >
+        <button
+          type="button"
+          className="p-2 rounded-full hover:bg-gray-100"
+          disabled
+        ></button>
+        <input
+          type="text"
+          className="flex-1 border border-gray-300 px-4 py-2 rounded-2xl outline-none bg-[#f7f8fa]"
+          placeholder="Type here..."
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+        />
+        <button
+          type="submit"
+          className="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-full flex items-center justify-center"
+          disabled={!newMessage.trim()}
+        >
+          Send
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default ChatSection;
