@@ -2,11 +2,13 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../store/Slice/authslice";
+import toast, { Toaster } from "react-hot-toast";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const authUser = useSelector((state) => state.auth.authUser);
   const handleLogout = () => {
+    toast.success("Logged out successfully!");
     dispatch(logoutUser());
   };
   return (

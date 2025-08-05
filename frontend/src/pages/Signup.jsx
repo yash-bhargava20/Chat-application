@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import toast, { Toaster } from "react-hot-toast";
 library.add(far, fas);
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -19,9 +20,15 @@ const Signup = () => {
   const dispatch = useDispatch();
   const { isSigningUp } = useSelector((state) => state.auth);
 
-  const handleSignIn = (e) => {
-    e.preventDefault();
-    dispatch(registerUser(formData));
+  const handleSignIn = async (e) => {
+    try {
+      e.preventDefault();
+      await dispatch(registerUser(formData)).unwrap();
+
+      toast.success("Registering Successfully!");
+    } catch (error) {
+      toast.error(error.message || "Registration failed. Please try again.");
+    }
   };
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -32,8 +39,8 @@ const Signup = () => {
 
   return (
     <>
+      <Toaster position="top-right" />
       <div className=" md:flex mx-3 lg:mx-auto my-10  overflow-hidden  border rounded-lg max-w-5xl border-gray-50">
-        {/* Left Side - Login Form */}
         <div className="md:w-1/2 flex items-center justify-center bg-white lg:px-20 lg:py-12 md:px-10 md:py-10 sm:px-8 sm:py-8 ">
           <div className="max-w-md w-full ">
             <form onSubmit={handleSignIn} className="space-y-4">
@@ -134,7 +141,6 @@ const Signup = () => {
             </form>
           </div>
         </div>
-        {/* Right Side - Image or Illustration */}
         <div className="w-1/2 bg-indigo-500 hidden md:block">Image</div>
       </div>
     </>

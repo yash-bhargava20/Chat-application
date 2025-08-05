@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchUser, setSelectedUser } from "../store/Slice/chatSlice";
 
 const SideBar = () => {
+  //  const authUser = useSelector((state) => state.auth.authUser);
   const dispatch = useDispatch();
   const { users, onlineUsers, selectedUser } = useSelector(
     (state) => state.chat
@@ -36,6 +37,16 @@ const SideBar = () => {
           />
         </div>
       </div>
+      <div className="flex items-center justify-between px-4 py-2">
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={showOnlineOnly}
+            onChange={() => setShowOnlineOnly((prev) => !prev)}
+          />
+          Show Online Only
+        </label>
+      </div>
 
       <div
         className="overflow-y-auto p-2 sm:p-3 w-full"
@@ -54,7 +65,7 @@ const SideBar = () => {
             >
               <div className="relative">
                 <img
-                  src={"/avatar-holder.avif"}
+                  src={user?.profilePic || "/avatar-holder.avif"}
                   alt="Avatar"
                   className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover"
                 />

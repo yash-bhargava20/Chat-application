@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../lib/axios";
+//const getToken = () => localStorage.getItem("token");
 
 export const getUser = createAsyncThunk(
   "/user/getUser",
@@ -33,6 +34,7 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+
 export const logoutUser = createAsyncThunk(
   "user/logout",
   async (_, thunkAPI) => {
@@ -47,6 +49,7 @@ export const logoutUser = createAsyncThunk(
     }
   }
 );
+
 export const registerUser = createAsyncThunk(
   "user/signup",
   async (data, thunkAPI) => {
@@ -62,13 +65,33 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  "user/update",
+  async (data, thunkAPI) => {
+    try {
+      console.log("Sending update request with data:", data);
+
+      const res = await axiosInstance.put("/api/auth/update", data, {
+        withCredentials: true,
+      });
+      console.log("Update successful:", res.data);
+      return res.data.user;
+    } catch (error) {
+      console.log("Error updating user:", error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || "Failed to update user"
+      );
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     authUser: null,
     isLoggingIn: false,
     isSigningUp: false,
-    isUpdating: false,
+    isUpdatingProfile: false,
     isCheckingAuth: true,
     isLoggingOut: false,
     error: null,
@@ -127,8 +150,22 @@ const authSlice = createSlice({
         state.authUser = null;
         state.isSigningUp = false;
         state.error = action.payload;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isUpdatingProfile = true;
+        state.updateError = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.authUser = action.payload;
+        state.isUpdatingProfile = false;
+        state.updateError = null;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.isUpdatingProfile = false;
+        state.updateError = action.payload;
       });
   },
 });
+
 export const { setOnlineUsers } = authSlice.actions;
 export default authSlice.reducer;

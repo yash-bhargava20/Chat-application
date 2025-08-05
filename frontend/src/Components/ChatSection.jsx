@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchMessages, sendMessage } from "../store/Slice/chatSlice";
+import {
+  fetchMessages,
+  sendMessage,
+  setSelectedUser,
+} from "../store/Slice/chatSlice";
+import { X } from "lucide-react";
 
 const ChatSection = () => {
   const dispatch = useDispatch();
@@ -59,6 +64,13 @@ const ChatSection = () => {
             </div>
           </div>
         </div>
+        <button
+          className="p-2 rounded-full hover:bg-gray-100 md:hidden"
+          title="Close chat"
+          onClick={() => dispatch(setSelectedUser(null))}
+        >
+          <X className="w-6 h-6 text-gray-500" />
+        </button>
       </div>
 
       {/* Messages */}
@@ -124,7 +136,7 @@ const ChatSection = () => {
         ></button>
         <input
           type="text"
-          className="flex-1 border border-gray-300 px-4 py-2 rounded-2xl outline-none bg-[#f7f8fa]"
+          className="flex-1 border bg-gray-100 border-gray-300 px-4 py-2 rounded-2xl outline-none focus:border-indigo-400"
           placeholder="Type here..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}

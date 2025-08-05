@@ -6,7 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import toast, { Toaster } from "react-hot-toast";
 library.add(far, fas);
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -18,9 +20,15 @@ const Login = () => {
   const dispatch = useDispatch();
   const { isLoggingIn } = useSelector((state) => state.auth);
 
-  const handleLogin = (e) => {
+  const navigate = useNavigate();
+  const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch(loginUser(formData));
+    try {
+      await dispatch(loginUser(formData)).unwrap();
+      navigate("/", { state: { showToast: true } });
+    } catch (error) {
+      toast.error(error.message || "Login failed. Please try again.");
+    }
   };
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -31,8 +39,8 @@ const Login = () => {
 
   return (
     <>
+      <Toaster position="top-right" />
       <div className=" md:flex mx-3 lg:mx-auto my-10  overflow-hidden shadow-lg border rounded-lg max-w-5xl border-gray-50">
-        {/* Left Side - Login Form */}
         <div className="md:w-1/2 flex items-center justify-center bg-white lg:px-20 lg:py-12 md:px-10 md:py-10 sm:px-8 sm:py-8 ">
           <div className="max-w-md w-full ">
             <form onSubmit={handleLogin} className="space-y-4">
