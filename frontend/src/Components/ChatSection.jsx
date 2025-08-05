@@ -5,7 +5,7 @@ import {
   sendMessage,
   setSelectedUser,
 } from "../store/Slice/chatSlice";
-import { X } from "lucide-react";
+import { X, ArrowLeft } from "lucide-react";
 
 const ChatSection = () => {
   const dispatch = useDispatch();
@@ -25,7 +25,6 @@ const ChatSection = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
   const handleSend = (e) => {
     e.preventDefault();
     if (newMessage.trim() && selectedUser?._id) {
@@ -42,17 +41,26 @@ const ChatSection = () => {
 
   if (!selectedUser) {
     return (
-      <div className="flex-1 flex items-center justify-center text-gray-400">
+      <div className="hidden md:flex flex-1 items-center justify-center text-gray-400">
         Select a user or group to start chatting
       </div>
     );
   }
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-white rounded-xl shadow-sm">
+    <div className="flex-1 flex flex-col h-full bg-white rounded-xl shadow-sm fixed inset-0 z-40 md:static md:z-auto md:block">
       {/* Header */}
       <div className="border-b border-gray-200 px-4 py-2 flex items-center justify-between">
         <div className="flex items-center gap-4">
+          {/* Back button on mobile */}
+          <button
+            className="mr-2 p-2 rounded-full hover:bg-gray-100 md:hidden"
+            title="Back to sidebar"
+            onClick={() => dispatch(setSelectedUser(null))}
+          >
+            <ArrowLeft className="w-6 h-6 text-gray-500" />
+          </button>
+
           <img
             src={selectedUser?.avatar?.url || "/avatar-holder.avif"}
             alt="Avatar"
@@ -64,8 +72,10 @@ const ChatSection = () => {
             </div>
           </div>
         </div>
+
+        {/* Close on desktop only */}
         <button
-          className="p-2 rounded-full hover:bg-gray-100 md:hidden"
+          className="p-2 rounded-full hover:bg-gray-100 hidden md:block"
           title="Close chat"
           onClick={() => dispatch(setSelectedUser(null))}
         >
@@ -100,22 +110,29 @@ const ChatSection = () => {
                     className="w-8 h-8 rounded-full object-cover"
                   />
                   <div
-                    className={` px-4 py-2 text-sm shadow ${
+                    className={`px-4 py-2 text-sm shadow min-w-[60px] flex items-start ${
                       isMe
-                        ? "bg-[#6c47ff] text-white rounded-b-lg rounded-l-lg"
-                        : "bg-white text-gray-900 rounded-b-lg rounded--lg"
+                        ? "bg-indigo-600 text-white rounded-b-lg rounded-l-lg"
+                        : "bg-white text-gray-800 rounded-b-lg rounded-r-lg"
                     }`}
                   >
-                    {msg.message}
+                    <div className="flex items-end gap-2 w-full">
+                      <span className="break-words flex-1">{msg.message}</span>
+                      <span
+                        className="text-[9px] font-thin"
+                        style={{ alignSelf: "flex-end" }}
+                      >
+                        {msg.timestamp || msg.createdAt
+                          ? new Date(
+                              msg.timestamp || msg.createdAt
+                            ).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : ""}
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-xs text-gray-400 pb-1 min-w-fit">
-                    {msg.timestamp
-                      ? new Date(msg.timestamp).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })
-                      : ""}
-                  </span>
                 </div>
               </div>
             );
@@ -124,7 +141,6 @@ const ChatSection = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
       <form
         onSubmit={handleSend}
         className="px-6 py-4 border-t border-gray-200 flex items-center gap-3 bg-white"

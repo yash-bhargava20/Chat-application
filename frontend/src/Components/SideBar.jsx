@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUser, setSelectedUser } from "../store/Slice/chatSlice";
+import { Search } from "lucide-react";
 
 const SideBar = () => {
   //  const authUser = useSelector((state) => state.auth.authUser);
@@ -27,13 +28,15 @@ const SideBar = () => {
         <span className="font-bold text-xl sm:text-2xl text-gray-800">
           Contacts
         </span>
-        <div>
+        <div className="relative mt-2 mb-1  ">
+          <Search className=" absolute h-4 w-4 text-gray-400 top-1/2 left-3 -translate-y-1/2"></Search>
+
           <input
             type="text"
             value={search}
             placeholder="Search people or group"
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full px-3 py-2 mt-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-400 text-sm mb-2 bg-gray-100"
+            className="w-full pl-10 pr-3  py-2 mt-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-400 text-sm mb-2 bg-gray-100"
           />
         </div>
       </div>
@@ -44,7 +47,7 @@ const SideBar = () => {
             checked={showOnlineOnly}
             onChange={() => setShowOnlineOnly((prev) => !prev)}
           />
-          Show Online Only
+          Show Online Users
         </label>
       </div>
 

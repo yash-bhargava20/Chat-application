@@ -52,27 +52,43 @@ exports.login = async (req, res) => {
 };
 exports.updateProfile = async (req, res) => {
   const userId = req.user.id;
-  const { username, email, password } = req.body;
+  const { username, about } = req.body;
+
+  const updateData = {};
+  if (username) updateData.username = username;
+  if (about !== undefined) updateData.about = about;
+
+  if (req.file) {
+    updateData.profilePic = `/uploads/${req.file.filename}`;
+  }
+
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { username, email, password },
-      { new: true, runValidators: true }
-    );
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    });
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     res.status(200).json({
       message: "Profile updated successfully",
       user: {
         id: updatedUser._id,
         username: updatedUser.username,
-        email: updatedUser.email,
+        profilePic: updatedUser.profilePic,
+        about: updatedUser.about,
       },
     });
   } catch (err) {
+    console.error("Update profile error:", err);
+
     res
       .status(500)
       .json({ message: "Error updating profile", error: err.message });
   }
 };
+
 exports.getMe = async (req, res) => {
   try {
     const user = req.user;

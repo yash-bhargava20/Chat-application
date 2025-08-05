@@ -9,6 +9,7 @@ const messageRoutes = require("./routes/messageroutes");
 const fileUpload = require("express-fileupload");
 const cloudinary = require("cloudinary").v2;
 const { initSocket } = require("./utils/socket");
+const path = require("path");
 
 dotenv.config();
 const app = express();
@@ -25,12 +26,8 @@ app.use(
     credentials: true,
   })
 );
-app.use(
-  fileUpload({
-    useTempFiles: true,
-    tempFileDir: "./temp/",
-  })
-);
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
