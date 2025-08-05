@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Camera, User, Info } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { updateUser } from "../store/Slice/authslice";
 const Profile = () => {
   const dispatch = useDispatch();
