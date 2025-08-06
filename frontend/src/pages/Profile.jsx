@@ -3,6 +3,8 @@ import { Camera, User, Info } from "lucide-react";
 import { useState } from "react";
 import { updateUser } from "../store/Slice/authslice";
 const Profile = () => {
+  const BACKEND_URL =
+    import.meta.env.VITE_API_URL || "https://threadly-backend.onrender.com";
   const dispatch = useDispatch();
   const { authUser, isUpdatingProfile } = useSelector((state) => state.auth);
 
@@ -11,7 +13,7 @@ const Profile = () => {
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(
     authUser?.profilePic
-      ? import.meta.env.VITE_BACKEND_URL + `/uploads/${authUser.profilePic}`
+      ? `${BACKEND_URL} + /uploads/${authUser.profilePic}`
       : "/avatar-holder.avif"
   );
 
