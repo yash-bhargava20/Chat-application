@@ -88,7 +88,7 @@ const ChatSection = () => {
         </button>
       </div>
       {/* Messages Section */}
-      <div className=" flex-1 h-[80vh] overflow-y-auto  px-8 py-6 space-y-4 bg-[#f7f8fa]">
+      <div className=" flex-1 h-[80vh] overflow-y-auto  px-6 py-5 space-y-4 bg-[#f7f8fa]">
         {isMessagesLoading ? (
           <div className="text-center  text-gray-400">Loading messages...</div>
         ) : (
@@ -147,7 +147,7 @@ const ChatSection = () => {
       {/* Input */}
       <form
         onSubmit={handleSend}
-        className="w-full  mx-auto px-3 py-4 border-t border-gray-200 flex  items-center gap-3 bg-white "
+        className="w-full  mx-auto px-3 py-4 border-t border-gray-200 flex  items-center gap-2 bg-white "
       >
         <button
           type="button"
@@ -176,7 +176,7 @@ const ChatSection = () => {
 
         <input
           type="text"
-          className="flex-1 shrink border bg-gray-100 border-gray-300 px-4 py-2 rounded-2xl outline-none focus:border-indigo-400 "
+          className="flex-1  border bg-gray-100 border-gray-300 px-4 py-2 rounded-2xl outline-none focus:border-indigo-400 "
           placeholder="Type here..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
@@ -184,7 +184,7 @@ const ChatSection = () => {
 
         <button
           type="submit"
-          className="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-full flex items-center justify-center"
+          className="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-full "
           disabled={!newMessage.trim()}
         >
           <SendHorizonal className="w-5 h-5" />
