@@ -41,7 +41,7 @@ const Login = () => {
     <>
       <Toaster position="top-right" />
       <div className=" md:flex mx-3 lg:mx-auto my-10  overflow-hidden shadow-lg border rounded-lg max-w-5xl border-gray-50">
-        <div className="md:w-1/2 flex items-center justify-center bg-white lg:px-20 lg:py-12 md:px-10 md:py-10 sm:px-8 sm:py-8 ">
+        <div className="md:w-1/2  flex items-center justify-center bg-white p-5 lg:px-20 lg:py-12 md:px-10 md:py-10 sm:px-8 sm:py-8 ">
           <div className="max-w-md w-full ">
             <form onSubmit={handleLogin} className="space-y-4">
               <h2 className="text-3xl font-bold text-gray-800">Login</h2>

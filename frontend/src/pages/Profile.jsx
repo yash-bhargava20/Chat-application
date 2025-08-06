@@ -11,7 +11,7 @@ const Profile = () => {
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(
     authUser?.profilePic
-      ? `http://localhost:5000/uploads/${authUser.profilePic}`
+      ? import.meta.env.VITE_BACKEND_URL + `/uploads/${authUser.profilePic}`
       : "/avatar-holder.avif"
   );
 
