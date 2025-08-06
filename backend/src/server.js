@@ -19,24 +19,18 @@ const server = http.createServer(app);
 initSocket(server);
 
 app.use(express.json());
-app.use(cookie());
+
 const allowedOrigins = [
   "http://localhost:5173",
   "https://threadly-frontend-2e9s.onrender.com",
 ];
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: allowedOrigins,
     credentials: true,
   })
 );
-
+app.use(cookie());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 cloudinary.config({
