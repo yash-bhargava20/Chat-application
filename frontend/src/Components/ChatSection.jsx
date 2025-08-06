@@ -5,7 +5,8 @@ import {
   sendMessage,
   setSelectedUser,
 } from "../store/Slice/chatSlice";
-import { X, ArrowLeft } from "lucide-react";
+import { X, ArrowLeft, Paperclip, Smile, SendHorizonal } from "lucide-react";
+import EmojiPicker from "emoji-picker-react";
 
 const ChatSection = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const ChatSection = () => {
   const { authUser } = useSelector((state) => state.auth);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   useEffect(() => {
     if (selectedUser?._id) {
@@ -39,6 +41,11 @@ const ChatSection = () => {
       setNewMessage("");
     }
   };
+  const handleEmojiClick = (e) => {
+    console.log(e);
+
+    setNewMessage((prev) => prev + e.emoji);
+  };
 
   if (!selectedUser) {
     return (
@@ -50,10 +57,8 @@ const ChatSection = () => {
 
   return (
     <div className="flex-1 flex flex-col h-full bg-white rounded-xl shadow-sm fixed inset-0 z-40 md:static md:z-auto md:block">
-      ={" "}
       <div className="border-b border-gray-200 px-4 py-2 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          {/* Back button on mobile */}
           <button
             className="mr-2 p-2 rounded-full hover:bg-gray-100 md:hidden"
             title="Back to sidebar"
@@ -108,7 +113,7 @@ const ChatSection = () => {
                     className="w-8 h-8 rounded-full object-cover"
                   />
                   <div
-                    className={`px-4 py-2 text-sm shadow min-w-[60px] flex items-start ${
+                    className={`px-4 py-2  shadow min-w-[60px] flex items-start ${
                       isMe
                         ? "bg-indigo-600 text-white rounded-b-lg rounded-l-lg"
                         : "bg-white text-gray-800 rounded-b-lg rounded-r-lg"
@@ -142,15 +147,41 @@ const ChatSection = () => {
       <form
         onSubmit={handleSend}
         className="px-6 py-4 border-t border-gray-200 flex items-center gap-3 bg-white"
+        encType="multipart/form-data"
       >
+        <input
+          type="file"
+          id="fileInput"
+          className="hidden"
+          onChange={() => {}}
+        />
         <button
           type="button"
+          onClick={() => document.getElementById("fileInput").click()}
           className="p-2 rounded-full hover:bg-gray-100"
-          disabled
-        ></button>
+          title="Attach file"
+        >
+          <Paperclip className="w-5 h-5 text-gray-500" />
+        </button>
+        <div className="relative">
+          <button
+            type="button"
+            className="p-2 rounded-full hover:bg-gray-100"
+            title="Emoji Picker"
+            onClick={() => setShowEmojiPicker((prev) => !prev)}
+          >
+            <Smile className="w-5 h-5 text-gray-500" />
+          </button>
+          {showEmojiPicker && (
+            <div className=" absolute bottom-12  left-0 z-50">
+              <EmojiPicker onEmojiClick={handleEmojiClick} />
+            </div>
+          )}
+        </div>
+
         <input
           type="text"
-          className="flex-1 border bg-gray-100 border-gray-300 px-4 py-2 rounded-2xl outline-none focus:border-indigo-400"
+          className="flex-1 border bg-gray-100 border-gray-300 px-4 py-2 rounded-2xl  outline-none focus:border-indigo-400"
           placeholder="Type here..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
@@ -160,7 +191,7 @@ const ChatSection = () => {
           className="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-full flex items-center justify-center"
           disabled={!newMessage.trim()}
         >
-          Send
+          <SendHorizonal />
         </button>
       </form>
     </div>

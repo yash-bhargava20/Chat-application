@@ -20,12 +20,10 @@ initSocket(server);
 
 app.use(express.json());
 app.use(cookie());
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
-    credentials: true,
-  })
-);
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://threadly-frontend-2e9s.onrender.com",
+];
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
