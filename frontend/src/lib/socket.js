@@ -5,14 +5,11 @@ export const connectSocket = (userId) => {
     console.warn("No userId provided for socket connection.");
     return null;
   }
-  socket = io(
-    import.meta.env.MODE === "development"
-      ? "https://threadly-backend.onrender.com"
-      : "/",
-    {
-      query: { userId },
-    }
-  );
+  socket = io("https://threadly-backend.onrender.com", {
+    query: { userId },
+    transports: ["websocket", "polling"],
+    withCredentials: true,
+  });
   socket.on("connect", () => {
     console.log("Socket connected:", socket.id);
   });
