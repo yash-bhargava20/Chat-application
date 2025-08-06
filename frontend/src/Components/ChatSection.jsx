@@ -147,7 +147,6 @@ const ChatSection = () => {
       <form
         onSubmit={handleSend}
         className="px-6 py-4 border-t border-gray-200 flex items-center gap-3 bg-white"
-        encType="multipart/form-data"
       >
         <input
           type="file"
@@ -158,12 +157,12 @@ const ChatSection = () => {
         <button
           type="button"
           onClick={() => document.getElementById("fileInput").click()}
-          className="p-2 rounded-full hover:bg-gray-100"
+          className="p-2 rounded-full hover:bg-gray-100 shrink-0"
           title="Attach file"
         >
           <Paperclip className="w-5 h-5 text-gray-500" />
         </button>
-        <div className="relative">
+        <div className="relative shrink-0">
           <button
             type="button"
             className="p-2 rounded-full hover:bg-gray-100"
@@ -178,17 +177,19 @@ const ChatSection = () => {
             </div>
           )}
         </div>
+        <div className="flex-1">
+          <input
+            type="text"
+            className="flex-1 border bg-gray-100 border-gray-300 px-4 py-2 rounded-2xl  outline-none focus:border-indigo-400"
+            placeholder="Type here..."
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+          />
+        </div>
 
-        <input
-          type="text"
-          className="flex-1 border bg-gray-100 border-gray-300 px-4 py-2 rounded-2xl  outline-none focus:border-indigo-400"
-          placeholder="Type here..."
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-        />
         <button
           type="submit"
-          className="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-full flex items-center justify-center"
+          className="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-full flex items-center justify-center shrink-0"
           disabled={!newMessage.trim()}
         >
           <SendHorizonal />
