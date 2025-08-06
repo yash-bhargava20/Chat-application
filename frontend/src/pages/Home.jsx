@@ -17,7 +17,7 @@ const Home = () => {
       <Toaster position="top-right" />
       <div className="min-h-screen bg-gray-100">
         <div className="flex items-center justify-center pt-10 px-2">
-          <div className="bg-white rounded-xl shadow-md w-full  h-[85vh] overflow-hidden flex">
+          <div className="bg-white rounded-xl shadow-md w-full h-[100vh]  overflow-hidden flex">
             <SideBar />
             <ChatSection />
           </div>
