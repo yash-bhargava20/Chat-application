@@ -25,7 +25,7 @@ const SideBar = () => {
   }, [dispatch]);
 
   return (
-    <div className="h-full w-full sm:w-64 lg:w-72 border-r border-gray-300 flex flex-col bg-white">
+    <div className="h-full w-full border-r border-gray-300 flex flex-col bg-white">
       <div className="border-b border-gray-300 p-4 sm:p-3">
         <span className="font-bold text-xl sm:text-2xl text-gray-800">
           Contacts
@@ -52,7 +52,6 @@ const SideBar = () => {
           Show Online Users
         </label>
       </div>
-
       <div
         className="overflow-y-auto p-2 sm:p-3 w-full"
         style={{ scrollBehavior: "smooth" }}

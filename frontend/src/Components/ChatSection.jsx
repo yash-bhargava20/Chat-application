@@ -49,48 +49,48 @@ const ChatSection = () => {
 
   if (!selectedUser) {
     return (
-      <div className="hidden md:flex flex-1 items-center justify-center text-gray-400">
-        Select a user or group to start chatting
-      </div>
+      <>
+        <div className="hidden md:flex flex-1 items-center justify-center text-gray-400">
+          Select a user or group to start chatting
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="flex-1 flex flex-col md:h-full  h-screen bg-white rounded-xl shadow-sm fixed inset-0 z-40 md:static md:z-auto md:block">
-      <div className="border-b border-gray-200 px-4 py-2 flex items-center justify-between">
+    <div className="flex flex-col h-screen w-full ">
+      <div className="border-b border-gray-200 px-2 sm:px-4 py-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <button
-            className="mr-2 p-2 rounded-full hover:bg-gray-100 md:hidden"
+            className="mr-1 sm:mr-2 p-2 rounded-full hover:bg-gray-100 md:hidden"
             title="Back to sidebar"
             onClick={() => dispatch(setSelectedUser(null))}
           >
-            <ArrowLeft className="w-6 h-6 text-gray-500" />
+            <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-500" />
           </button>
-
           <img
             src={selectedUser?.avatar?.url || "/avatar-holder.avif"}
             alt="Avatar"
-            className="w-12 h-12 rounded-full object-cover"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
           />
           <div>
-            <div className="font-semibold text-gray-900 text-lg">
+            <div className="font-semibold text-gray-900 text-base sm:text-lg">
               {selectedUser.username || "Group Name"}
             </div>
           </div>
         </div>
-
         <button
           className="p-2 rounded-full hover:bg-gray-100 hidden md:block"
           title="Close chat"
           onClick={() => dispatch(setSelectedUser(null))}
         >
-          <X className="w-6 h-6 text-gray-500" />
+          <X className="w-5 h-5 sm:w-6 sm:h-6 text-gray-500" />
         </button>
       </div>
       {/* Messages Section */}
-      <div className=" flex-1 h-[80vh] overflow-y-auto  px-6 py-5 space-y-4 bg-[#f7f8fa]">
+      <div className="flex-1 overflow-y-auto px-2 sm:px-6 py-3 sm:py-5 space-y-3 sm:space-y-4 bg-[#f7f8fa]">
         {isMessagesLoading ? (
-          <div className="text-center  text-gray-400">Loading messages...</div>
+          <div className="text-center text-gray-400">Loading messages...</div>
         ) : (
           messages?.map((msg) => {
             const isMe = msg.sender === authUser._id;
@@ -100,7 +100,7 @@ const ChatSection = () => {
                 className={`flex ${isMe ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`flex items-end gap-2 max-w-[70%] ${
+                  className={`flex items-end gap-1 sm:gap-2 max-w-[90vw] sm:max-w-[70%] ${
                     isMe ? "flex-row-reverse" : ""
                   }`}
                 >
@@ -111,19 +111,21 @@ const ChatSection = () => {
                         : selectedUser?.avatar?.url || "/avatar-holder.avif"
                     }
                     alt="Avatar"
-                    className="w-8 h-8 rounded-full object-cover"
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover"
                   />
                   <div
-                    className={`px-4 py-2  shadow min-w-[60px] flex items-start ${
+                    className={`px-3 sm:px-4 py-2 shadow min-w-[40px] sm:min-w-[60px] flex items-start ${
                       isMe
                         ? "bg-indigo-600 text-white rounded-b-lg rounded-l-lg"
                         : "bg-white text-gray-800 rounded-b-lg rounded-r-lg"
                     }`}
                   >
-                    <div className="flex items-end gap-2 w-full">
-                      <span className="break-words flex-1">{msg.message}</span>
+                    <div className="flex items-end gap-1 sm:gap-2 w-full">
+                      <span className="break-words flex-1 text-sm sm:text-base">
+                        {msg.message}
+                      </span>
                       <span
-                        className="text-[9px] font-thin"
+                        className="text-[8px] sm:text-[9px] font-thin"
                         style={{ alignSelf: "flex-end" }}
                       >
                         {msg.timestamp || msg.createdAt
@@ -147,17 +149,16 @@ const ChatSection = () => {
       {/* Input */}
       <form
         onSubmit={handleSend}
-        className="w-full  mx-auto px-3 py-4 border-t border-gray-200 flex  items-center gap-2 bg-white "
+        className="w-full mx-auto px-2 sm:px-3 py-3 sm:py-4 border-t border-gray-200 flex items-center gap-1 sm:gap-2 bg-white"
       >
         <button
           type="button"
-          onClick={() => document.getElementById("fileInput").click()}
+          onClick={() => document.getElementById("fileInput")?.click()}
           className="p-2 rounded-full hover:bg-gray-100"
           title="Attach file"
         >
           <Paperclip className="w-5 h-5 text-gray-500" />
         </button>
-
         <div className="relative">
           <button
             type="button"
@@ -173,18 +174,16 @@ const ChatSection = () => {
             </div>
           )}
         </div>
-
         <input
           type="text"
-          className="flex-1  border bg-gray-100 border-gray-300 px-4 py-2 rounded-2xl outline-none focus:border-indigo-400 "
+          className="flex-1 border bg-gray-100 border-gray-300 px-3 sm:px-4 py-2 rounded-2xl outline-none focus:border-indigo-400 text-sm sm:text-base"
           placeholder="Type here..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
         />
-
         <button
           type="submit"
-          className="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-full "
+          className="bg-indigo-500 hover:bg-indigo-600 text-white p-2 rounded-full"
           disabled={!newMessage.trim()}
         >
           <SendHorizonal className="w-5 h-5" />

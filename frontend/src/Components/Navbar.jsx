@@ -2,7 +2,8 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../store/Slice/authslice";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { Home, User, Settings, LogOut } from "lucide-react";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const Navbar = () => {
     dispatch(logoutUser());
   };
   return (
-    <nav className="bg-white text-black px-4 py-3 shadow-md">
+    <nav className=" bg-white text-black px-4 py-3 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-xl font-semibold">Chat App</h1>
         <div className="space-x-4">
