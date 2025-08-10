@@ -16,8 +16,6 @@ import { Loader } from "lucide-react";
 const App = () => {
   const { authUser, isCheckingAuth } = useSelector((state) => state.auth);
 
-  console.log(authUser);
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getUser());

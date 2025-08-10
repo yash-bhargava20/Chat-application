@@ -7,17 +7,12 @@ const {
   logout,
 } = require("../controllers/authController");
 const protectedroute = require("../middleware/authmiddleware");
-const upload = require("../middleware/uploadMiddleware");
+// const upload = require("../middleware/uploadMiddleware");
 const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/login", login);
-router.put(
-  "/update",
-  protectedroute,
-  upload.single("profilePic"),
-  updateProfile
-);
+router.put("/update", protectedroute, updateProfile);
 router.get("/profile", protectedroute, getMe);
 router.get("/logout", protectedroute, logout);
 

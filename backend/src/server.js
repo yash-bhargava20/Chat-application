@@ -6,7 +6,6 @@ const cookie = require("cookie-parser");
 const cors = require("cors");
 const authRoutes = require("./routes/authroutes");
 const messageRoutes = require("./routes/messageroutes");
-const fileUpload = require("express-fileupload");
 const cloudinary = require("cloudinary").v2;
 const { initSocket } = require("./utils/socket");
 const path = require("path");
@@ -18,7 +17,9 @@ const server = http.createServer(app);
 
 initSocket(server);
 
-app.use(express.json());
+// Increase body size limit for base64 image uploads
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 const allowedOrigins = [
   "http://localhost:5173",

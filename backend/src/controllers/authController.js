@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const cloudinary = require("cloudinary").v2;
+
 exports.signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -50,23 +52,33 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 exports.updateProfile = async (req, res) => {
   const userId = req.user.id;
-  const { username, about } = req.body;
+  const { profilePic, username, about } = req.body;
 
   const updateData = {};
   if (username) updateData.username = username;
   if (about !== undefined) updateData.about = about;
 
-  if (req.file) {
-    updateData.profilePic = `/uploads/${req.file.filename}`;
-  }
-
   try {
+    if (profilePic) {
+      const result = await cloudinary.uploader.upload(profilePic, {
+        folder: "profile_pics",
+      });
+
+      updateData.profilePic = profilePic;
+    }
+
     const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
       new: true,
       runValidators: true,
     });
+
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -82,7 +94,6 @@ exports.updateProfile = async (req, res) => {
     });
   } catch (err) {
     console.error("Update profile error:", err);
-
     res
       .status(500)
       .json({ message: "Error updating profile", error: err.message });

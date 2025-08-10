@@ -3,41 +3,55 @@ import { Camera, User, Info } from "lucide-react";
 import { useState } from "react";
 import { updateUser } from "../store/Slice/authslice";
 const Profile = () => {
-  const BACKEND_URL =
-    import.meta.env.VITE_API_URL || "https://threadly-backend.onrender.com";
+  // const BACKEND_URL =
+  //   import.meta.env.VITE_API_URL || "https://threadly-backend.onrender.com";
   const dispatch = useDispatch();
   const { authUser, isUpdatingProfile } = useSelector((state) => state.auth);
 
   const [username, setUsername] = useState(authUser?.username || "");
   const [about, setAbout] = useState(authUser?.about || "");
-  const [avatar, setAvatar] = useState(null);
+  const [avatar, setAvatar] = useState("");
+  // const [avatarPreview, setAvatarPreview] = useState(
+  //   authUser?.profilePic
+  //     ? `${BACKEND_URL}/uploads/${authUser.profilePic}`
+  //     : "/avatar-holder.avif"
+  // );
   const [avatarPreview, setAvatarPreview] = useState(
-    authUser?.profilePic
-      ? `${BACKEND_URL} + /uploads/${authUser.profilePic}`
-      : "/avatar-holder.avif"
+    authUser?.profilePic || "/avatar-holder.avif"
   );
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setAvatar(file);
-      setAvatarPreview(URL.createObjectURL(file));
-    }
+    if (!file) return;
+    // if (file) {
+    //   setAvatar(file);
+    //   setAvatarPreview(URL.createObjectURL(file));
+    // }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setAvatar(reader.result);
+      setAvatarPreview(reader.result);
+    };
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("username", username);
-    formData.append("about", about);
-    if (avatar) formData.append("profilePic", avatar);
+    // const formData = new FormData();
+    // formData.append("username", username);
+    // formData.append("about", about);
+    // if (avatar) formData.append("profilePic", avatar);
 
-    // for (let [key, value] of formData.entries()) {
-    //   console.log("FORM ENTRY:", key, value); // Should log profilePic as File
-    // }
+    const payload = {
+      username,
+      about,
+    };
+    if (avatar) {
+      payload.profilePic = avatar;
+    }
 
-    dispatch(updateUser(formData));
+    dispatch(updateUser(payload));
   };
 
   return (
