@@ -71,7 +71,7 @@ exports.updateProfile = async (req, res) => {
         folder: "profile_pics",
       });
 
-      updateData.profilePic = profilePic;
+      updateData.profilePic = result.secure_url;
     }
 
     const updatedUser = await User.findByIdAndUpdate(userId, updateData, {

@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Camera, User, Info } from "lucide-react";
 import { useState } from "react";
 import { updateUser } from "../store/Slice/authslice";
+
 const Profile = () => {
   // const BACKEND_URL =
   //   import.meta.env.VITE_API_URL || "https://threadly-backend.onrender.com";
@@ -11,22 +12,15 @@ const Profile = () => {
   const [username, setUsername] = useState(authUser?.username || "");
   const [about, setAbout] = useState(authUser?.about || "");
   const [avatar, setAvatar] = useState("");
-  // const [avatarPreview, setAvatarPreview] = useState(
-  //   authUser?.profilePic
-  //     ? `${BACKEND_URL}/uploads/${authUser.profilePic}`
-  //     : "/avatar-holder.avif"
-  // );
+
   const [avatarPreview, setAvatarPreview] = useState(
-    authUser?.profilePic || "/avatar-holder.avif"
+    authUser?.profilePic || "/avtar-holder.avif"
   );
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    // if (file) {
-    //   setAvatar(file);
-    //   setAvatarPreview(URL.createObjectURL(file));
-    // }
+
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
@@ -37,11 +31,6 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // const formData = new FormData();
-    // formData.append("username", username);
-    // formData.append("about", about);
-    // if (avatar) formData.append("profilePic", avatar);
 
     const payload = {
       username,
@@ -67,11 +56,18 @@ const Profile = () => {
         >
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="relative">
-              <img
-                src={avatarPreview}
-                alt="Avatar"
-                className="size-36 bg-amber-100 rounded-full object-cover mb-2"
-              />
+              {authUser.profilePic ? (
+                <img
+                  src={avatarPreview}
+                  alt="Avatar"
+                  className="size-36 rounded-full object-cover mb-2"
+                />
+              ) : (
+                <div className="size-36 flex items-center justify-center rounded-full bg-gray-200 mb-2">
+                  <User className="w-16 h-16 text-gray-500" />
+                </div>
+              )}
+
               <label
                 htmlFor="avatar-upload"
                 className="absolute bottom-1 right-3 bg-white p-2 rounded-full shadow cursor-pointer hover:bg-gray-100"

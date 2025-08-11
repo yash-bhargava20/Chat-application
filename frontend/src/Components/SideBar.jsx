@@ -4,9 +4,6 @@ import { fetchUser, setSelectedUser } from "../store/Slice/chatSlice";
 import { Search } from "lucide-react";
 
 const SideBar = () => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-  //  const authUser = useSelector((state) => state.auth.authUser);
   const dispatch = useDispatch();
   const { users, onlineUsers, selectedUser } = useSelector(
     (state) => state.chat
@@ -70,9 +67,7 @@ const SideBar = () => {
               <div className="relative">
                 <img
                   src={
-                    user?.profilePic
-                      ? `${backendUrl}/uploads/${user.profilePic}`
-                      : "/avatar-holder.avif"
+                    user?.profilePic ? user.profilePic : "/avatar-holder.avif "
                   }
                   alt="Avatar"
                   className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover"

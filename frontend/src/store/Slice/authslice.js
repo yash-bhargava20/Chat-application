@@ -65,72 +65,20 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-// export const updateUser = createAsyncThunk(
-//   "user/update",
-//   async (data, thunkAPI) => {
-//     try {
-//       console.log("Sending update request with data:", data);
-
-//       const res = await axiosInstance.put("/api/auth/update", data, {
-//         headers: { "Content-Type": "application/json" },
-//         withCredentials: true,
-//       });
-//       console.log("Update successful:", res.data);
-//       return res.data.user;
-//     } catch (error) {
-//       console.log("Error updating user:", error);
-//       return thunkAPI.rejectWithValue(
-//         error.response?.data || "Failed to update user"
-//       );
-//     }
-//   }
-// );
 export const updateUser = createAsyncThunk(
   "user/update",
   async (data, thunkAPI) => {
     try {
-      console.log("Updating profile...");
+      console.log("Sending update request with data:", data);
 
-      let profilePicUrl = data.profilePic;
-
-      // If profilePic is base64 (data URL), upload to Cloudinary first
-      if (profilePicUrl && profilePicUrl.startsWith("data:")) {
-        const formData = new FormData();
-        formData.append("file", profilePicUrl);
-        formData.append("upload_preset", "profile_upload"); // from Cloudinary settings
-        formData.append("folder", "profile_pics");
-
-        const uploadRes = await fetch(
-          `https://api.cloudinary.com/v1_1/ddlcqkjnr/image/upload`,
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        const uploadedImageData = await uploadRes.json();
-
-        if (!uploadedImageData.secure_url) {
-          throw new Error("Image upload to Cloudinary failed");
-        }
-
-        profilePicUrl = uploadedImageData.secure_url;
-      }
-
-      // Send updated info to backend
-      const res = await axiosInstance.put(
-        "/api/auth/update",
-        { ...data, profilePic: profilePicUrl },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-
-      console.log("Profile updated:", res.data);
+      const res = await axiosInstance.put("/api/auth/update", data, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      console.log("Update successful:", res.data);
       return res.data.user;
     } catch (error) {
-      console.error("Error updating user:", error);
+      console.log("Error updating user:", error);
       return thunkAPI.rejectWithValue(
         error.response?.data || "Failed to update user"
       );

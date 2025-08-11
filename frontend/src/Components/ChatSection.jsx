@@ -69,7 +69,7 @@ const ChatSection = () => {
             <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-500" />
           </button>
           <img
-            src={selectedUser?.avatar?.url || "/avatar-holder.avif"}
+            src={selectedUser?.profilePic || "/avatar-holder.avif"}
             alt="Avatar"
             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
           />
@@ -107,8 +107,8 @@ const ChatSection = () => {
                   <img
                     src={
                       isMe
-                        ? authUser?.avatar?.url || "/avatar-holder.avif"
-                        : selectedUser?.avatar?.url || "/avatar-holder.avif"
+                        ? authUser?.profilePic || "/avatar-holder.avif"
+                        : selectedUser?.profilePic || "/avatar-holder.avif"
                     }
                     alt="Avatar"
                     className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover"
