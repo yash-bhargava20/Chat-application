@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
-import Navbar from "./Components/Navbar";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Setting from "./pages/Setting";
@@ -11,10 +10,11 @@ import { getUser } from "./store/Slice/authslice";
 import { setOnlineUsers } from "./store/Slice/chatSlice";
 
 import { connectSocket, disconnectSocket } from "./lib/socket";
-import { Loader } from "lucide-react";
+import Navbar from "./Components/Navbar";
+// import { Loader } from "lucide-react";
 
 const App = () => {
-  const { authUser, isCheckingAuth } = useSelector((state) => state.auth);
+  const { authUser } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -36,13 +36,13 @@ const App = () => {
       console.log("No user is authenticated.", authUser);
     }
   }, [authUser, dispatch]);
-  if (isCheckingAuth) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader className="animate-spin text-blue-500" />
-      </div>
-    );
-  }
+  // if (isCheckingAuth) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <Loader className="animate-spin text-blue-500" />
+  //     </div>
+  //   );
+  // }
 
   return (
     <>

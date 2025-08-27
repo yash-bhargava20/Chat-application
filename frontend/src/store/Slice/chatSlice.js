@@ -48,6 +48,27 @@ export const fetchUser = createAsyncThunk(
     }
   }
 );
+export const deleteMessage = createAsyncThunk(
+  "chat/delete",
+  async (msgId, thunkAPI) => {
+    try {
+      // const token = localStorage.getItem("token");
+
+      await axiosInstance.delete(
+        `/api/messages/${msgId}`
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // }
+      );
+      return msgId;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || "Failed to delete message"
+      );
+    }
+  }
+);
 const chatSlice = createSlice({
   name: "chat",
   initialState: {
@@ -98,6 +119,14 @@ const chatSlice = createSlice({
       })
       .addCase(sendMessage.fulfilled, (state, action) => {
         state.messages.push(action.payload);
+      })
+      .addCase(deleteMessage.fulfilled, (state, action) => {
+        state.messages = state.messages.filter(
+          (msg) => msg._id !== action.payload
+        );
+      })
+      .addCase(deleteMessage.rejected, (state, action) => {
+        state.error = action.payload;
       });
   },
 });

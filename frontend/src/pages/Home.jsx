@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SideBar from "../Components/SideBar";
+import Navbar from "../Components/Navbar";
 import ChatSection from "../Components/ChatSection";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -18,24 +19,25 @@ const Home = () => {
   return (
     <>
       <Toaster position="top-right" />
-      <div className="bg-gray-100">
-        <div className="flex items-center justify-center pt-0 md:pt-10 px-0 md:px-3 md:min-h-screen">
-          <div className="bg-white rounded-lg shadow-md w-full flex md:h-screen h-screen">
-            <div
-              className={` md:w-1/2 lg:w-1/4 w-full ${
-                selectedUser ? "hidden md:block" : "block"
-              }`}
-            >
-              <SideBar />
-            </div>
 
-            <div
-              className={`flex-1  ${
-                !selectedUser ? "hidden md:flex" : "flex"
-              } flex-col`}
-            >
-              <ChatSection />
-            </div>
+      <div className="bg-base-200 min-h-screen w-screen flex">
+        <div className="bg-base-100 rounded-lg shadow-md flex w-full h-screen ml-16">
+          <Navbar />
+
+          {/* Sidebar */}
+          <div
+            className={`transition-all duration-200 md:w-1/3 lg:w-1/4 w-full border-r border-base-300 
+            ${selectedUser ? "hidden md:block" : "block"}`}
+          >
+            <SideBar />
+          </div>
+
+          {/* Chat Section */}
+          <div
+            className={`flex-1 flex flex-col 
+            ${!selectedUser ? "hidden md:flex" : "flex"}`}
+          >
+            <ChatSection />
           </div>
         </div>
       </div>

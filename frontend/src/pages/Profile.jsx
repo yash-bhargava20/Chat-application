@@ -56,17 +56,11 @@ const Profile = () => {
         >
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="relative">
-              {authUser.profilePic ? (
-                <img
-                  src={avatarPreview}
-                  alt="Avatar"
-                  className="size-36 rounded-full object-cover mb-2"
-                />
-              ) : (
-                <div className="size-36 flex items-center justify-center rounded-full bg-gray-200 mb-2">
-                  <User className="w-16 h-16 text-gray-500" />
-                </div>
-              )}
+              <img
+                src={avatarPreview}
+                alt="Avatar"
+                className="size-36 rounded-full object-cover mb-2"
+              />
 
               <label
                 htmlFor="avatar-upload"

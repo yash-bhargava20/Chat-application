@@ -9,7 +9,7 @@ exports.signup = async (req, res) => {
     if (password.length < 6) {
       return res
         .status(400)
-        .json({ messagd: "Password must be of at least 6 characters" });
+        .json({ message: "Password must be of at least 6 characters" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, email, password: hashedPassword });
@@ -52,6 +52,7 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,

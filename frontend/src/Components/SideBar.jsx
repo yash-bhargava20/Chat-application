@@ -22,20 +22,20 @@ const SideBar = () => {
   }, [dispatch]);
 
   return (
-    <div className="h-full w-full border-r border-gray-300 flex flex-col bg-white">
-      <div className="border-b border-gray-300 p-4 sm:p-3">
-        <span className="font-bold text-xl sm:text-2xl text-gray-800">
+    <div className="h-full w-full border-r border-base-300 flex flex-col bg-base-100">
+      <div className="border-b border-base-300 p-4 sm:p-3">
+        <span className="font-bold text-xl sm:text-2xl text-base-content">
           Contacts
         </span>
         <div className="relative mt-2 mb-1  ">
-          <Search className=" absolute h-4 w-4 text-gray-400 top-1/2 left-3 -translate-y-1/2"></Search>
+          <Search className=" absolute h-4 w-4 text-base-content top-1/2 left-3 -translate-y-1/2"></Search>
 
           <input
             type="text"
             value={search}
             placeholder="Search people or group"
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-3  py-2 mt-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-1 focus:ring-indigo-400 text-sm mb-2 bg-gray-100"
+            className="w-full pl-10 pr-3  py-2 mt-2 rounded-2xl border border-base-300 focus:outline-none focus:ring-1 focus:ring-indigo-400 text-sm mb-2 bg-base-300"
           />
         </div>
       </div>
@@ -60,8 +60,8 @@ const SideBar = () => {
               onClick={() => dispatch(setSelectedUser(user))}
               className={`w-full p-2 sm:p-3 flex items-center gap-3 transition-colors rounded-md ${
                 selectedUser?._id === user._id
-                  ? "bg-gray-200"
-                  : "hover:bg-gray-200"
+                  ? "bg-base-200 text-primary"
+                  : "hover:bg-primary/50"
               }`}
             >
               <div className="relative">
@@ -78,17 +78,19 @@ const SideBar = () => {
               </div>
 
               <div className="text-left">
-                <div className="text-sm sm:text-base font-medium text-gray-800 truncate">
+                <div className="text-sm sm:text-base font-medium textbase-content truncate">
                   {user.username}
                 </div>
-                <div className="text-xs sm:text-sm text-gray-500">
+                <div className="text-xs sm:text-sm text-base-content/50">
                   {onlineUsers.includes(user._id) ? "Online" : "Offline"}
                 </div>
               </div>
             </button>
           ))
         ) : (
-          <p className="text-center text-gray-400 text-sm">No users found</p>
+          <p className="text-center text-base-content text-sm">
+            No users found
+          </p>
         )}
       </div>
     </div>
