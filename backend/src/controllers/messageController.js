@@ -26,13 +26,13 @@ exports.sendMessages = async (req, res) => {
       const result = await cloudinary.uploader.upload(Image, {
         folder: "chat_images",
       });
+      imageUrl = result.secure_url;
     }
-    imageUrl = result.secure_url;
     const newMessage = await Message.create({
       sender,
       receiver,
       message,
-      Image,
+      Image: imageUrl,
     });
     res.status(201).json(newMessage);
   } catch (err) {

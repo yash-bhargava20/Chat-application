@@ -21,7 +21,7 @@ const Home = () => {
       <Toaster position="top-right" />
 
       <div className="bg-base-200 min-h-screen w-screen flex">
-        <div className="bg-base-100 rounded-lg shadow-md flex w-full h-screen ml-16">
+        <div className="bg-base-100 rounded-lg shadow-md flex w-full h-screen md:ml-16">
           <Navbar />
 
           {/* Sidebar */}
@@ -34,7 +34,7 @@ const Home = () => {
 
           {/* Chat Section */}
           <div
-            className={`flex-1 flex flex-col 
+            className={`flex-1 flex flex-col  mt-12 md:mt-0
             ${!selectedUser ? "hidden md:flex" : "flex"}`}
           >
             <ChatSection />

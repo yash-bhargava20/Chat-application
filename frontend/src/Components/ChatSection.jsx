@@ -87,7 +87,7 @@ const ChatSection = () => {
       <div className="border-b border-base-200 px-2 sm:px-4 py-2 flex items-center justify-between bg-base-100">
         <div className="flex items-center gap-2">
           <button
-            className="mr-1 sm:mr-2 p-2 rounded-full hover:bg-base-200 md:hidden"
+            className="mr-1 sm:mr-2 p-2 rounded-full hover:bg-base-300 md:hidden"
             title="Back to sidebar"
             onClick={() => dispatch(setSelectedUser(null))}
           >
@@ -196,7 +196,7 @@ const ChatSection = () => {
 
           <input
             type="text"
-            className="flex-1 border bg-base-200 border-base-300 px-3 sm:px-4 py-2 rounded-2xl outline-none focus:border-primary text-sm sm:text-base"
+            className="flex-1 border bg-base-300 border-base-300 px-3 sm:px-4 py-2 rounded-2xl outline-none focus:border-primary text-sm sm:text-base "
             placeholder="Type here..."
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
